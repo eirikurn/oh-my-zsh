@@ -1,6 +1,8 @@
 # Aliases
-alias g='git'
-compdef g=git
+# alias g='git'
+# compdef g=git
+alias g='git status'
+compdef _git g=git-status
 alias gst='git status'
 compdef _git gst=git-status
 alias gl='git pull'
@@ -9,6 +11,8 @@ alias gup='git fetch && git rebase'
 compdef _git gup=git-fetch
 alias gp='git push'
 compdef _git gp=git-push
+alias gd='git diff'
+compdef _git gd=git-diff
 gdv() { git diff -w "$@" | view - }
 compdef _git gdv=git-diff
 alias gc='git commit -v'
@@ -54,12 +58,6 @@ function current_branch() {
   echo ${ref#refs/heads/}
 }
 
-function current_repository() {
-
-  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-  echo $(git remote -v | cut -d':' -f 2)
-}
-
 # these aliases take advantage of the previous function
 alias ggpull='git pull origin $(current_branch)'
 compdef ggpull=git
@@ -67,3 +65,7 @@ alias ggpush='git push origin $(current_branch)'
 compdef ggpush=git
 alias ggpnp='git pull origin $(current_branch) && git push origin $(current_branch)'
 compdef ggpnp=git
+
+function gg() {
+  git commit -v -a -m "$*"
+}
